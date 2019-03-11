@@ -1,6 +1,6 @@
 # RoboticsNanodegree
 
-This is a repository containing code written for Udacity's Robotics Software Engineer Nanodegree. It contains projects developed for the Nanodegree. Projects are desinged to be run in a ROS Catkin workspace, and have been tested on ROS ____ (TODO - check which version Udacity uses).
+This is a repository containing code written for Udacity's Robotics Software Engineer Nanodegree. It contains projects developed for the Nanodegree. Projects are desinged to be run in a ROS Catkin workspace, and have been tested on ROS ____ *(TODO - check which version Udacity uses)*.
 
 ## Project 1 - Build My Wolrd
 
