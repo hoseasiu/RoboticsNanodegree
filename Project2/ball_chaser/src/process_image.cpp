@@ -24,7 +24,7 @@ void drive_robot(float lin_x, float ang_z)
 void process_image_callback(const sensor_msgs::Image img)
 {
 
-    int white_pixel = 255;
+    int fully_saturated = 255;
 
     // TODO: Loop through each pixel in the image and check if there's a bright white one
     // Then, identify if this pixel falls in the left, mid, or right side of the image
@@ -37,7 +37,9 @@ void process_image_callback(const sensor_msgs::Image img)
     // Loop through each pixel in the image and check if it's white
     for (int i = 0; i < img.height; i++) {
 		for (int j = 0; j < img.step; j++) {
-	        if (img.data[i*img.step+j] == white_pixel) {
+	        if (img.data[i*img.step+j] == fully_saturated &&
+		   img.data[i*img.step+j+1] == fully_saturated &&
+		   img.data[i*img.step+j+2] == fully_saturated) {
 				white_center_of_mass = white_center_of_mass + j - img.step/2.0;
 				num_white_pixels = num_white_pixels + 1.0;
 	        }
