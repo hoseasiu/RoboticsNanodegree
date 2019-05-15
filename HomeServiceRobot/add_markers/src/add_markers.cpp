@@ -3,27 +3,37 @@
 #include <nav_msgs/Odometry.h>
 #include <math.h>
 
-double pickupPosX = 3.0;
-double pickupPosY = -9.0;
-double dropoffPosX = 7.0;
-double dropoffPosY = 2.0;
+// using different values for object position and object marker because the coordinate frame of the robot is translated and rotated from the coordinate frame of the map
+double pickupPosX = 8.0;
+double pickupPosY = 0.0;
+double dropoffPosX = -3.0;
+double dropoffPosY = 4.0;
+
+double pickupMarkerX = 3.0;
+double pickupMarkerY = -9.0;
+double dropoffMarkerX = 7.0;
+double dropoffMarkerY = 2.0;
+
 bool pickedUp = false;
 bool droppedOff = false;
 
 void odomCallback(const nav_msgs::Odometry::ConstPtr& msg) {
-  double robotX = msg->pose.pose.position.x;
+  double robotX = msg->pose.pose.position.x;		// flipping sign and adding offset to account for the starting position of the robot at (3,-1) in a flipped frame
+  robotX = robotX;
   double robotY = msg->pose.pose.position.y;
+  robotY = robotY;
   
   if(!pickedUp){
-		double distanceToPickup = sqrt((robotX - pickupPosX)*(robotX - pickupPosX) + (robotY - pickupPosY)*(robotY - pickupPosY));
-
-		if (distanceToPickup < 0.3) {
-		  pickedUp = true;
-		}
+	double distanceToPickup = sqrt((robotX - pickupPosX)*(robotX - pickupPosX) + (robotY - pickupPosY)*(robotY - pickupPosY));
+	ROS_INFO("distance to pickup %f, currently at %f, %f",distanceToPickup,robotX,robotY);
+	if (distanceToPickup < 0.3) {
+	  pickedUp = true;
+	}
   }
   
   else{
-    double distanceToDropoff = sqrt((robotX - dropoffPosX)*(robotX - dropoffPosX) + (robotY - dropoffPosY)*(robotY - dropoffPosY));  
+    double distanceToDropoff = sqrt((robotX - dropoffPosX)*(robotX - dropoffPosX) + (robotY - dropoffPosY)*(robotY - dropoffPosY)); 
+    ROS_INFO("distance to dropoff %f, currently at %f, %f",distanceToDropoff,robotX,robotY); 
     if (distanceToDropoff < 0.3) {
       droppedOff = true;
     }
@@ -56,8 +66,8 @@ int main( int argc, char** argv )
   marker.type = shape;
 
   // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-  marker.pose.position.x = pickupPosX;
-  marker.pose.position.y = pickupPosY;
+  marker.pose.position.x = pickupMarkerX;
+  marker.pose.position.y = pickupMarkerY;
   marker.pose.position.z = 0;
   marker.pose.orientation.x = 0.0;
   marker.pose.orientation.y = 0.0;
@@ -79,16 +89,16 @@ int main( int argc, char** argv )
   while (ros::ok())
   {
     // Publish the marker
-    //while (marker_pub.getNumSubscribers() < 1)
-    //{
-    //  if (!ros::ok())
-    //  {
-    //    return 0;
-    //  }
-    //  ROS_WARN_ONCE("Please create a subscriber to the marker");
-    //  sleep(1);
-    //}
-    
+    while (marker_pub.getNumSubscribers() < 1)
+    {
+      if (!ros::ok())
+      {
+        return 0;
+      }
+      ROS_WARN_ONCE("Please create a subscriber to the marker");
+      sleep(1);
+    }
+
     if (!pickedUp)
     {
       marker.action = visualization_msgs::Marker::ADD;
@@ -101,8 +111,8 @@ int main( int argc, char** argv )
     }
     else
     {
-      marker.pose.position.x = dropoffPosX;
-      marker.pose.position.y = dropoffPosY;
+      marker.pose.position.x = dropoffMarkerX;
+      marker.pose.position.y = dropoffMarkerY;
       marker.action = visualization_msgs::Marker::ADD;
       marker_pub.publish(marker);
     }
