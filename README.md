@@ -2,9 +2,9 @@
 
 This is a repository containing code written for Udacity's Robotics Software Engineer Nanodegree. It contains projects developed for the Nanodegree. Projects are desinged to be run in a ROS Catkin workspace, and have been tested on ROS Kinetic.
 
-## Project 1 - Build My Wolrd
+## Project 1 - Build My World
 
-This project is an introduction to Gazebo, and contains a Gazebo World and a few models designed for that world. Dogbone World is a house with a few rooms and two tables shaped roughly like dog bones.
+This project is an introduction to Gazebo, and contains a Gazebo World and a few models designed for that world. Dogbone World is a house with a few rooms and two tables shaped roughly like dog bones. A additional blocks of various shapes and sizes were added to the world to act as landmarks. These blocks were used rather than Gazebo model objects because the pgm-map-creator package that is used later to generate a map of the world does not perform well with Gazebo models of irregular shapes.
 
 ## Project 2 - Go Chase It!
 
